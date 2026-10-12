@@ -1,0 +1,457 @@
+murelay-v0.4.ci
+
+Copyright (c) 2026 Joseph M. Miller MD MPH
+SPDX-License-Identifier: MIT
+Home:   https://www.maceutils.com
+Source: github.com/pocojoe/rescue
+MACE_MODIFIED:  2026-10-06T15:45:53Z
+
+murelay is a natural-language program a chat PERFORMS to capture a chat
+WHILE its context is still healthy -- the calm-register member of the mu
+family. It is rescue-shaped (independent, parallel-authored, not derived)
+and adds the in-context analysis an out-of-context chat cannot do. Each
+capture is one link in a CHAIN of sessions on one project. CLASS ci
+(PERFORM). SURFACE chatbox, platform-neutral.
+
+================================================================
+RELATION TO RESCUE
+================================================================
+
+rescue is the emergency, out-of-context capture. murelay is the calm,
+in-context capture: invoked before context is exhausted, so the chat can
+still read itself. murelay carries everything rescue carries and adds a
+relay-time synopsis and a reviewed topic list. Compatibility with rescue
+is a DELIBERATE parallel, checked at the family audit, not a build
+dependency. murelay does not include or import rescue.
+
+================================================================
+RULES (PRIORITY ORDER)
+================================================================
+
+  1. UPLOADED FRESH, PERFORMED IN PLACE. murelay is uploaded into each
+     session and performed in the chat it was uploaded into. It is NOT
+     single-use: the capsule it produces is a chain member, and the next
+     session performs murelay again at its own close.
+  2. NO SELF-CARRIAGE. murelay NEVER copies itself into the workdir or
+     the relay-full zip. The zip carries the operator's work, not the
+     tool.
+  3. .nl/.ci NEVER CROSSES in the relay-full. No run.py, no copy of
+     murelay, travels in the produced zip.
+  4. NO MURELAY-EMITTED BINARY. Workdir files are plain members;
+     murelay emits no container of its own. Operator-created binaries
+     keep their own form.
+  5. ANALYSIS IS RELAY-ONLY AND PROVENANCE-MARKED. The synopsis and
+     topic list are produced at relay time, in context, and carried as
+     DISTINCT members tagged relay-authored -- never folded into the
+     deterministic five-axis core. The same holds for file-purpose.txt.
+  6. NAMES ARE THE CHAIN RECORD. Every relay-full name carries the
+     project and the dts. No chain index, register, or manifest is
+     written anywhere.
+  7. ENTRY, NOT ORCHESTRATION. A performance names the managed chat
+     environment and hands the session across. It does NOT dispatch,
+     sequence, or compose mulib, muquiz, or muload.
+  8. SANDBOX HOLDS THE WORK; THE CHAT HOLDS THE EAGER SET. At recover
+     every member unpacks to the sandbox. Only the eager set enters the
+     chat; everything else is read on demand.
+  9. LOOKUP BEFORE ACTING. Before acting on a subject, check the index
+     and the topics; if a carried file covers it, read that file from
+     the sandbox first. Read a decision's body before any design call
+     its heading bears on. Never answer from memory as though a file
+     had been read.
+  10. NO SCRIPT SHIPS. The recovery index is specified below and built
+     by the performing chat with its own sandbox code. No index program
+     travels in murelay.zip or in a relay-full.
+
+================================================================
+WHAT MURELAY CARRIES (relay-full)
+================================================================
+
+Five axes of session state -- the continuity part of a session, not the
+whole of it -- one plain-text member each:
+  goal.txt       what the operator is trying to do
+  rules.txt      things set and not to change
+  files.txt      the files/things the work uses
+  decisions.txt  choices made, not to redo. One record per decision:
+                 heading at column 0, body lines indented two spaces.
+  nextstep.txt   the one thing to do next
+
+Relay-time analysis (NEW vs rescue; relay-authored, segregated):
+  synopsis.txt  a ~200-word synopsis of the whole chat, written in
+                context by the chat that lived it.
+  topics.txt    the named topics covered. murelay PROPOSES topic
+                names; the operator REVIEWS and edits; the agreed
+                names are recorded. Header line: relay-authored.
+
+  file-purpose.txt  one purpose line per carried file or file pattern,
+                at most 200 characters, relay-authored. Not reviewed
+                by the operator.
+
+Plus: the workdir files (plain members); lastdiscussed.txt (the ~50-word
+"Last Discussed" snippet); mtimes.txt (each workdir file's mtime);
+manifest-files.txt; provenance.txt (surface, version, utc, since -- tool
+surface only, never operator identity); README-murelay.txt; and
+search-index.txt (recall keys) when off-axis material exists.
+
+FORMATS. Tabular members are TSV: path or key first, no header line, one
+record per row, LF line endings.
+  file-purpose.txt    path<TAB>purpose  (a pattern such as out/wear_*.png
+                      is allowed as the path)
+  mtimes.txt          path<TAB>mtime, ISO-8601 UTC, Z-terminated
+  provenance.txt      key<TAB>value; keys surface, version, utc, since.
+                      since is the dts of the capsule this chat was
+                      recovered from; omit it on a chain's first link.
+  manifest-files.txt  EXCEPTION: sha256sum format, "<sha256>  <path>",
+                      so sha256sum -c verifies it.
+A path containing TAB, LF or backslash is written C-style escaped (\t
+\n \\) and named in one WARN.
+
+================================================================
+THE CHAIN
+================================================================
+
+A chain is a multi-session series of chats on one project. Each capsule
+names its project and carries a dts, so membership and order read off
+the names alone.
+
+  Name form:  murelay-<project>-<YYYYMMDDTHHMMSS>Z.zip
+  Project:    ^[a-z0-9]+$ -- lowercase letters and digits only. No
+              hyphen, underscore, space, dot or uppercase; a leading
+              digit is permitted. The hyphen is the field separator and
+              must stay free.
+  Parse:      ONE method. Split the name from the LEFT on hyphen into
+              EXACTLY three fields, root-project-dts. Three fields or
+              the name does not parse.
+  Order:      sorting the names groups by project, then by time.
+
+The relay chain's first link is muload, which carries the project into a
+fresh chat. murelay is the closing link of each session and the handover
+to the next. muload is not a dependency; the relation is sequence at
+performance time.
+
+The project element also names a DIRECTORY under project_base. murelay
+establishes the NAME ONLY. It does not create the directory, does not
+print a command for it, does not ask whether it exists, and does not
+gate on it. muload creates it silently at the next open; an absent
+directory is a normal condition, not a fault.
+
+ESTABLISHING THE PROJECT NAME
+
+  RECOVER              read it from the uploaded name by the Parse rule
+                       above; it is field two. Never rename it silently.
+  RELAY, continuing    if this chat was opened from a recovered capsule,
+                       carry that project name forward unchanged; do not
+                       ask again.
+  RELAY, opening       settle it by the ITERATED PROPOSAL below.
+  Legacy capsule       a name with no project element is accepted at
+                       RECOVER; report the project as unnamed. Do not
+                       rename it, do not migrate it, do not fail.
+
+ITERATED PROPOSAL (RELAY, opening)
+
+  1  Derive a candidate from the work in hand and show it for approval.
+     One question, inline y/n. Never propose a name that does not match
+     ^[a-z0-9]+$.
+  2  On y the name is settled; the loop ends.
+  3  On n ask the operator for a name. Take the suggestion as given.
+  4  Test the suggestion against the grammar.
+       CONFORMING      return to step 2 for approval.
+       NON-CONFORMING  state which rule failed, SHOW a corrected form,
+                       and return to step 2. NEVER substitute a
+                       correction silently.
+  5  Repeat until the name is BOTH conforming AND approved. Never infer
+     approval from the operator having typed the name. The loop is
+     unbounded; there is no attempt count at which it settles without
+     approval.
+
+================================================================
+TWO FORMS
+================================================================
+
+  murelay-empty (file: murelay.zip)   tool only, no operator work:
+    murelay-v0.4.ci.txt, murelay-v0.4.ci.txt.sha256, README-murelay.txt.
+  murelay-full  (file: murelay-<project>-<YYYYMMDDTHHMMSS>Z.zip)
+    operator work loaded; contents as above. Never contains murelay's
+    own NL/ci, an index program, or the recovery index.
+
+================================================================
+TRIGGER
+================================================================
+
+A performance starts when the operator uploads a murelay zip and gives
+any short go-ahead referring to the readme or directions -- e.g. "read
+and follow directions", "follow readme", or "go" with a murelay zip
+attached. The uploaded zip plus any such instruction is sufficient
+permission.
+
+================================================================
+ENTRY DISPATCH (THREE STATES)
+================================================================
+
+On the trigger, detect state, then confirm (name proposes; question +
+contents dispose). The chat is never assumed to know on its own which
+state it is in.
+
+  a. filename carries a dts (with or without a project element)
+                                                       -> RECOVER.
+  b. filename murelay.zip AND operator work present     -> RELAY.
+  c. filename murelay.zip AND no operator work          -> BALK.
+
+BALK: refuse and produce nothing -- packing a chat with no work would
+self-carry the tool (rule 2).
+
+================================================================
+THE README (ONE FILE)
+================================================================
+
+README-murelay.txt holds operator-facing words only; show only the
+detected arm's blocks.
+
+  COMMON:
+    Banner line 1: "Welcome to mu Relay".
+    Banner line 2: "murelay v0.4  {mode}  www.maceutils.com" --
+      {mode} = "Relay Mode" (RELAY), "Recover Mode" (RECOVER),
+      omitted (BALK). The version token is this artifact's own; it is
+      rendered at build, never typed into an arm.
+    New-in line: shown for RELAY and RECOVER only, not BALK.
+
+  RELAY:
+    "Project:" + the carried or proposed project name. Shown for
+      confirmation only when a chain is being opened; carried silently
+      when continuing.
+    "The following {nn} files will be preserved:" + the real count and
+      file list + planned murelay-<project>-<dts>Z.zip name.
+    The proposed TOPICS list (relay-authored), for operator review:
+      "Topics covered (edit or confirm):" + the proposed names.
+    One line: goal, rules, files, decisions, next step, a 200-word
+      synopsis, the agreed topics, and a short note on each file carried
+      to a new chat with the listed files.
+    "Terms of Use:" -- Author, Copyright (c) 2026, MIT, Home, Source.
+    "Do you wish to continue? Y/n".
+    On Y: the timestamped zip is created; download it, new chat,
+      upload, "Read and follow directions".
+
+  RECOVER:
+    "Project:" + the name read from the file, or "unnamed" for a legacy
+      capsule.
+    "Is this a new chat? Y/n" -- on no, stop; move file to a fresh chat.
+    Directive: saved files are inside this murelay zip; to keep them,
+      save the zip and unzip it (each file plain, ready to use).
+    One line: all saved files were unpacked to the workspace; only what
+      is needed is read into the chat.
+    "Last Discussed:" + carried snippet verbatim.
+    "What would you like to do next?".
+    The eager set and the recovery index are absorbed silently; they
+      are not echoed in the arm.
+
+  BALK:
+    Banner (mode omitted), "See www.maceutils.com for instructions.",
+    "Nothing to relay -- this chat has no work to save. murelay runs in
+    a chat that already holds your work." Produce nothing.
+
+================================================================
+EXECUTION -- RELAY SIDE
+================================================================
+
+Reached on RELAY (murelay.zip, no dts, operator work present); else
+BALK. Silent except named operator-facing output.
+
+  1. Choose the relay-full UTC ISO-8601 timestamp once; reuse it for
+     previewed name and final filename.
+  1a. PROJECT: carry the name forward if this chat was opened from a
+     recovered capsule; otherwise settle it by the ITERATED PROPOSAL
+     under THE CHAIN, in the RELAY arm. Emit nothing about the project
+     directory.
+  2. Extract the five axes into goal.txt, rules.txt, files.txt,
+     decisions.txt and nextstep.txt; write the ~50-word "Last Discussed"
+     snippet from the latest exchange into lastdiscussed.txt.
+  2a. RELAY ANALYSIS (in context):
+     - Compose synopsis.txt: a ~200-word synopsis of the whole chat
+       (not just the latest exchange), relay-authored header.
+     - Propose topic names covering the session; these are surfaced in
+       the RELAY arm for operator review.
+  2b. RECALL INDEX: if any load-bearing continuity detail lives only in
+     the verbatim exchange, write one search-index.txt row each (QUERY
+     / NOTE / ANCHOR). If none, write no file.
+  3. Echo the RELAY arm: banner, new-in, the project line where it
+     applies, the count-led file list, planned name, the proposed
+     Topics for review, the one-line carry statement, Terms of Use, "Do
+     you wish to continue? Y/n"; then, only on Y, the download
+     instruction. The operator's topic edits and any project-name edit
+     are absorbed before assembly.
+  4. On Y: write file-purpose.txt (one line per file or pattern, cut to
+     200 characters; sources one row each, regenerable products by
+     pattern), mtimes.txt (each workdir file's mtime), manifest-files.txt
+     (sandbox-computed SHA per file) and provenance.txt (surface,
+     version, utc, and since = the dts of the capsule this chat was
+     recovered from, if any). Assemble the murelay-full from goal.txt,
+     rules.txt, files.txt, decisions.txt, nextstep.txt,
+     lastdiscussed.txt, synopsis.txt, topics.txt, file-purpose.txt,
+     mtimes.txt, manifest-files.txt, provenance.txt, README-murelay.txt,
+     the workdir files AS PLAIN MEMBERS, and search-index.txt if written
+     (NOT murelay's NL/ci, NOT an index program). Name it
+     murelay-<project>-<dts>Z.zip. Present for download with the
+     upload-to-new-chat instruction.
+     On N: stop; produce nothing.
+
+================================================================
+EXECUTION -- RECOVER SIDE
+================================================================
+
+Reached on RECOVER (filename carries a dts). Performed in the fresh chat
+the murelay-full is uploaded into. Silent except named output.
+
+  1. Read the project element from the filename (unnamed if absent).
+     Read README-murelay.txt; echo the RECOVER arm; "Is this a new
+     chat? Y/n".
+  2. SAME-CHAT GUARD: on no, stop; instruct moving the file to a fresh
+     chat. murelay does not regenerate the chat it came from.
+  3. Echo the directive that the saved files are plain members (save
+     and unzip to keep them). Emit no bundle, no tar.
+  4. UNPACK EVERY MEMBER TO THE SANDBOX, always. There is no install
+     gate and no restore question. Echo the one workspace line.
+  5. Verify integrity (sandbox-computed, WARN-only): sha256sum -c style
+     check of every plain member against manifest-files.txt; WARN and
+     name any mismatch.
+  6. Build the RECOVERY INDEX in the sandbox (see RECOVERY INDEX).
+  7. Read the EAGER SET into the chat, silently: goal.txt, rules.txt,
+     nextstep.txt, lastdiscussed.txt, topics.txt, search-index.txt if
+     present, the column-0 lines of decisions.txt (headings only), and
+     the recovery index. Read nothing else. synopsis.txt, files.txt,
+     provenance.txt, decision bodies and workdir files stay in the
+     sandbox until a step needs them.
+  8. Echo "Last Discussed:" and the carried snippet, verbatim.
+  9. Echo "What would you like to do next?".
+
+================================================================
+LAZY LOAD -- AFTER RECOVER
+================================================================
+
+  - Before acting on a subject, check the index and topics. If a carried
+    file covers it, read that file from the sandbox first, then act.
+  - Read a decision's body before any design call its heading bears on.
+  - Read only what the step needs, at the moment it needs it.
+  - If the file is gone (the sandbox was reset): name the missing file,
+    ask the operator to re-upload the same capsule, re-unpack it
+    silently without repeating the RECOVER arm, and resume. Never answer
+    from memory as though the file had been read.
+
+================================================================
+RECOVERY INDEX
+================================================================
+
+Built at recover by the performing chat's own sandbox code, from the
+files actually unpacked. Never carried in a capsule. This indexes one
+capsule's contents; it is not a chain index (rule 6 stands).
+
+  ROW    <flag><path>  [<facts>]  <purpose or "(no purpose)">
+  flag   '*' when the file's mtimes.txt time is later than provenance
+         since; otherwise a space. No since: no flags.
+  facts  size, plus by type --
+           csv/tsv      columns x rows, first column names
+           R/Rmd/qmd    lines, functions defined, literal paths read and
+                        written
+           py/sh        lines, functions defined
+           txt/md/log   lines, first line that is not only a hash or a
+                        timestamp
+           other        type and size only (binary or unreadable)
+  purpose  from file-purpose.txt by exact path or by pattern glob; cut
+           to 200 characters.
+
+  COLLAPSE, in order:
+    1  Version groups: two or more files in one directory differing
+       only by a version token (v<digits>[.<digits>...]) become one row
+       naming the LATEST in version-sort order, with range and count,
+       e.g. "report-v2.1.txt (v1.0-v2.1, 3 files)". Facts are
+       the latest file's.
+    2  Pattern groups: three or more remaining files in one directory
+       whose names match with digit runs replaced by '*' become one row
+       with count and total size, e.g. "out/wear_*.png  [150 files,
+       439K]".
+    3  Directory groups: only when the index would exceed the ceiling.
+    Files in different directories never collapse together.
+
+  EXCLUDE manifest-files.txt, mtimes.txt, provenance.txt,
+  file-purpose.txt and README-murelay.txt; they describe the capsule,
+  not the work.
+
+  CEILING  at most 16000 characters loaded. Over it after collapse: one
+           row per directory (count, size), a one-line notice, and a
+           per-directory index built on demand when a step needs it.
+
+  WARN, never gate: a purpose row matching no file (named); files with
+  no purpose row (one count line, only when file-purpose.txt exists); no
+  file-purpose.txt (one line); a purpose over 200 characters (cut and
+  named); an escaped path (named).
+
+  LEGACY CAPSULE (no file-purpose.txt, mtimes.txt or lastdiscussed.txt;
+  axes unnamed): unpack to the sandbox as normal; index from facts only
+  with one summary WARN; no flags; locate the five axes and the Last
+  Discussed snippet by content and read them into the chat. Do not fail.
+  An empty or absent decisions.txt shows no headings and no WARN.
+
+================================================================
+VOICE
+================================================================
+
+  - Sixth-grade plain language. Short sentences.
+  - NO FIRST PERSON EVER. Passive/third person: "X will be created";
+    "N files were found"; "murelay will save...".
+  - Terms of Use sits under a labeled line at the foot of the RELAY arm.
+
+================================================================
+OUTPUT DISCIPLINE
+================================================================
+
+  - Invisible work (synopsis drafting, SHA/manifest checks, axis
+    absorption, zip assembly) runs silently. No running commentary.
+  - Progress shown by a dot-row; nothing more. Unpacking, the index
+    build and the eager-set read are silent.
+  - The only operator-facing output: the detected arm's readme blocks,
+    the questions (including the topics review and, where it applies,
+    the project name), any WARN, the presented murelay-full zip, and
+    the closing prompt.
+
+================================================================
+NEGATIVE OUTPUT (MUST NOT)
+================================================================
+
+  - MUST NOT copy itself into the workdir or relay-full; MUST NOT carry
+    a run.py forward.
+  - MUST NOT emit a murelay-generated binary container (no gzipped tar);
+    workdir files are plain members.
+  - MUST NOT fold synopsis or topics into the five-axis core; they are
+    distinct, relay-authored members.
+  - MUST NOT pack a chat with no operator work; BALK instead.
+  - MUST NOT write a chain index, register, or manifest; the filenames
+    are the only membership record.
+  - MUST NOT rename or migrate the project element of a capsule it did
+    not create; MUST NOT fail on a legacy name that has none.
+  - MUST NOT dispatch, sequence, or compose the other mu utilities, or
+    emit an instruction invoking them on the operator's behalf.
+  - MUST NOT assume any host directory layout; the sandbox resolves its
+    own paths.
+  - MUST NOT use first person in any output.
+  - MUST NOT read into the chat at recover anything outside the eager
+    set; MUST NOT ask "Restore files into current chat?" or gate the
+    unpack in any way.
+  - MUST NOT act on a subject a carried file covers before reading that
+    file from the sandbox; MUST NOT answer from memory as though a file
+    had been read.
+  - MUST NOT carry an index program or a recovery index in any zip.
+  - MUST NOT exceed 200 characters in a purpose line or 16000 in the
+    loaded index.
+  - MUST NOT write a tabular member other than manifest-files.txt in any
+    form but TSV path or key first, no header.
+  - MUST NOT proceed in the same chat it was created from.
+  - MUST NOT reproduce verbatim transcript content in the recall index
+    (keys only); MUST NOT write a key whose corpus is unreachable.
+  - MUST NOT record operator identity in provenance.txt (tool surface
+    only).
+  - MUST NOT treat a SHA or manifest mismatch as fatal; warn and inform.
+  - MUST NOT emit text outside the OUTPUT DISCIPLINE allow-list.
+  - MUST NOT show blocks from a non-detected arm.
+  - MUST NOT create, check, or ask about the project directory, or
+    print a command to create it. muload owns that.
+  - MUST NOT treat any recovery-index WARN as fatal.
+  - MUST NOT substitute a corrected project name silently, or infer
+    approval of a name from the operator having typed it.
